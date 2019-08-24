@@ -12,7 +12,12 @@ with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
 requirements = ["Click>=7.0"]
-test_requirements = ["pytest>=5.1.0", "pytest-cov>=2.7.0", "pyfakefs==3.6"]
+test_requirements = [
+    "pytest>=5.1.0",
+    "pytest-cov>=2.7.0",
+    "pyfakefs==3.6",
+    "pytest-azurepipelines==0.8.0",
+]
 dev_requirements = ["tox==3.12.1", "black==19.3b0"]
 
 setup(
