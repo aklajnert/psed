@@ -15,12 +15,12 @@ class Psed:
         self,
         input: str = "",
         find: typing.List[str] = None,
-        replace: str = "",
+        replace: str = None,
         inplace: bool = False,
     ):
         self.input: str = input
         self.find: typing.List[typing.Pattern] = self._get_patterns(find)
-        self.replace: str = replace
+        self.replace: typing.Optional[str] = replace
         self.in_place: bool = inplace
 
     def run(self):
@@ -38,8 +38,10 @@ class Psed:
                 Logger.log(f"File is binary: {path}", 2)
                 return []
 
-        if not self.replace:
+        if self.replace is None:
             return self._find_only(content, path)
+        else:
+            return self._replace(content, path)
 
     def _find_only(self, content, path):
         matches = []
@@ -54,6 +56,23 @@ class Psed:
             for match in matches:
                 Logger.log(f"\t{match.span()}: {match.group()}")
         return matches
+
+    def _replace(self, content, path):
+        _original_content = content
+        for pattern in self.find:
+            content = pattern.sub(self.replace, content)
+
+        if content == _original_content:
+            return False
+
+        if not self.in_place:
+            path += '_psed'
+
+        with open(path, 'w') as file_handle:
+            file_handle.write(content)
+        Logger.log(f"{'Saved file after changes' if not self.in_place else 'Modified file'}: {path}", 1)
+
+        return True
 
     def _get_patterns(self, patterns) -> typing.List[typing.Pattern]:
         if patterns is None:
