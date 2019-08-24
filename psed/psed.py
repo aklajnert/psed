@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import glob
 import os
+import re
 import sys
 import typing
 
@@ -18,12 +19,28 @@ class Psed:
         inplace: bool = False,
     ):
         self.input: str = input
-        self.find: typing.List[str] = find or []
+        self.find: typing.List[typing.Pattern] = self._get_patterns(find)
         self.replace: str = replace
         self.in_place: bool = inplace
 
     def run(self):
-        input_ = self._get_input()
+        input_list = self._get_input()
+
+
+    def _get_patterns(self, patterns) -> typing.List[typing.Pattern]:
+        if patterns is None:
+            return []
+        output = []
+        failures = False
+        for pattern in patterns:
+            try:
+                output.append(re.compile(pattern))
+            except re.error as exc:
+                Logger.log(f"Cannot compile pattern: {pattern}\n\t{exc}", -1)
+                failures = True
+        if failures:
+            sys.exit("Some find patterns have no been compiled successfully.")
+        return output
 
     def _get_input(self) -> typing.List[str]:
         if not os.path.exists(self.input):
