@@ -22,7 +22,7 @@ def test_find_simple(fs, capsys):
     assert output == ("input_file: 1 match:\n	(20, 26): needle\n")
 
 
-def test_not_found(fs, ):
+def test_not_found(fs,):
     fs.create_file("input_file", contents="the haystack")
 
     psed = Psed(find=["needle"])
@@ -127,3 +127,15 @@ def test_replace_regex(fs):
     assert match
 
     assert out_file.contents == "[SOME_ERROR] and [SOME_WARNING]"
+
+
+def test_replace_no_matches(fs):
+    in_file = fs.create_file("input_file", contents="a big haystack")
+
+    assert in_file.contents == "a big haystack"
+
+    psed = Psed(find=["needle"], replace="nail", inplace=True)
+    match = psed.process_file("input_file")
+
+    assert not match
+    assert in_file.contents == "a big haystack"
