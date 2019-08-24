@@ -13,7 +13,7 @@ with open("HISTORY.rst") as history_file:
 
 requirements = ["Click>=6.0"]
 test_requirements = ["pytest==5.0.1"]
-dev_requirements = ["tox==3.12.1", "black-19.3b0"]
+dev_requirements = ["tox==3.12.1", "black==19.3b0"]
 
 setup(
     author="Andrzej Klajnert",
