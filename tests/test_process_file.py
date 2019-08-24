@@ -86,3 +86,30 @@ def test_find_multiple_inputs(fs, capsys):
         "\t(36, 45): [WARNING]\n"
         "\t(111, 118): [DEBUG]\n"
     )
+
+
+def test_replace_simple(fs):
+    fs.create_file("input_file", contents="the haystack with a needle somewhere")
+    out_file = fs.create_file("input_file_psed")
+
+    assert out_file.contents == ""
+
+    psed = Psed(find=["needle"], replace="nail")
+    match = psed.process_file("input_file")
+
+    assert match
+    assert out_file.contents == "the haystack with a nail somewhere"
+
+
+def test_replace_simple_inplace(fs):
+    in_file = fs.create_file(
+        "input_file", contents="the haystack with a needle somewhere"
+    )
+
+    assert in_file.contents == "the haystack with a needle somewhere"
+
+    psed = Psed(find=["needle"], replace="nail", inplace=True)
+    match = psed.process_file("input_file")
+
+    assert match
+    assert in_file.contents == "the haystack with a nail somewhere"
