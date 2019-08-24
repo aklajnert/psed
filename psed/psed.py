@@ -66,11 +66,12 @@ class Psed:
             return False
 
         if not self.in_place:
-            path += '_psed'
+            path += "_psed"
 
-        with open(path, 'w') as file_handle:
+        with open(path, "w") as file_handle:
             file_handle.write(content)
-        Logger.log(f"{'Saved file after changes' if not self.in_place else 'Modified file'}: {path}", 1)
+        action = "Saved file after changes" if not self.in_place else "Modified file"
+        Logger.log(f"{action}: {path}", 1)
 
         return True
 
