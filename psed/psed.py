@@ -34,7 +34,7 @@ class Psed:
         with open(path) as file_handle:
             try:
                 content = file_handle.read()
-            except UnicodeDecodeError: # pragma: no cover
+            except UnicodeDecodeError:  # pragma: no cover
                 Logger.log(f"File is binary: {path}", 2)
                 return []
 

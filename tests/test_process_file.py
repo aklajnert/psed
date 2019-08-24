@@ -67,6 +67,7 @@ def test_find_regex(fs, capsys):
         "\t(111, 118): [DEBUG]\n"
     )
 
+
 def test_find_multiple_inputs(fs, capsys):
     fs.create_file("input_file", contents=LOG_FILE_CONTENT)
 

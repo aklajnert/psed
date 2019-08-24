@@ -33,4 +33,4 @@ steps:
 
 - script: |
     tox -e $(tox.env)
-  displayName: 'pytest'
+  displayName: 'tox'
