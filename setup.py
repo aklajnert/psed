@@ -11,7 +11,7 @@ with open("README.rst") as readme_file:
 with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
-requirements = ["Click>=6.0"]
+requirements = ["Click>=7.0"]
 test_requirements = ["pytest==5.0.1"]
 dev_requirements = ["tox==3.12.1", "black==19.3b0"]
 
@@ -28,7 +28,7 @@ setup(
         "Programming Language :: Python :: 3.8",
     ],
     description="CLI utility for text search / replace.",
-    entry_points={"console_scripts": ["psed=psed.cli:main"]},
+    entry_points={"console_scripts": ["psed=psed.__main__:main"]},
     install_requires=requirements,
     license="MIT license",
     long_description=readme + "\n\n" + history,
