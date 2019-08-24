@@ -51,7 +51,7 @@ def test_find_multiple_matches(fs, capsys):
 def test_find_regex(fs, capsys):
     fs.create_file("input_file", contents=LOG_FILE_CONTENT)
 
-    psed = Psed(find=["\[\w+\]"])
+    psed = Psed(find=[r"\[\w+\]"])
     matches = psed.process_file("input_file")
 
     assert len(matches) == 6
@@ -71,7 +71,7 @@ def test_find_regex(fs, capsys):
 def test_find_multiple_inputs(fs, capsys):
     fs.create_file("input_file", contents=LOG_FILE_CONTENT)
 
-    psed = Psed(find=["\[ERROR\]", "\[INFO\]", "\[WARNING\]", "\[DEBUG\]"])
+    psed = Psed(find=[r"\[ERROR\]", r"\[INFO\]", r"\[WARNING\]", r"\[DEBUG\]"])
     matches = psed.process_file("input_file")
 
     assert len(matches) == 6
