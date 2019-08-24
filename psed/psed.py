@@ -25,7 +25,32 @@ class Psed:
 
     def run(self):
         input_list = self._get_input()
+        for item in input_list:
+            self._process_file(item)
 
+    def _process_file(self, path: str):
+        with open(path) as file_handle:
+            try:
+                content = file_handle.read()
+            except UnicodeDecodeError:
+                Logger.log(f"File is binary: {path}", 2)
+                return
+
+        if not self.replace:
+            self._find_only(content, path)
+
+    def _find_only(self, content, path):
+        matches = []
+        for pattern in self.find:
+            match = pattern.search(content)
+            if match:
+                matches.append(match)
+        if matches:
+            Logger.log(
+                f"{path}: {len(matches)} {'matches' if len(matches) > 1 else 'match'}:"
+            )
+            for match in matches:
+                Logger.log(f"\t{match.span()}: {match.group()}")
 
     def _get_patterns(self, patterns) -> typing.List[typing.Pattern]:
         if patterns is None:
