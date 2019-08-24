@@ -12,7 +12,7 @@ with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
 requirements = ["Click>=7.0"]
-test_requirements = ["pytest==5.0.1"]
+test_requirements = ["pytest>=5.1.0", "pytest-cov>=2.7.0"]
 dev_requirements = ["tox==3.12.1", "black==19.3b0"]
 
 setup(

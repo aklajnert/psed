@@ -3,6 +3,8 @@ import os
 import sys
 import typing
 
+from psed.logger import Logger
+
 
 class Psed:
     """Main class for psed"""

@@ -2,8 +2,10 @@
 
 """Console script for psed."""
 import sys
+
 import click
 
+from .logger import Logger
 from .psed import Psed
 
 
@@ -16,8 +18,15 @@ from .psed import Psed
 @click.option(
     "--inplace", help="Modify the file(s) in place.", default=False, is_flag=True
 )
+@click.option(
+    "-v",
+    "--verbose",
+    count=True,
+    help="Increase verbosity.",
+)
 def main(**kwargs):
     """Console script for psed."""
+    Logger.set_verbosity(kwargs.pop('verbose', 0))
     psed = Psed(**kwargs)
     psed.run()
 
