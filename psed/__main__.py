@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Console script for psed."""
 import sys
 
@@ -19,6 +17,7 @@ from .psed import Psed
     "--inplace", help="Modify the file(s) in place.", default=False, is_flag=True
 )
 @click.option("-v", "--verbose", count=True, help="Increase verbosity.")
+@click.version_option(version=None)
 def main(**kwargs):
     """Console script for psed."""
     Logger.set_verbosity(kwargs.pop("verbose", 0))
@@ -27,4 +26,4 @@ def main(**kwargs):
 
 
 if __name__ == "__main__":
-    sys.exit(main())  # pragma: no cover
+    sys.exit(main(prog_name="psed"))  # pragma: no cover
