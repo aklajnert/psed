@@ -23,7 +23,7 @@ class Psed:
         self.replace: typing.Optional[str] = replace
         self.in_place: bool = inplace
 
-        Logger.log('Find patterns:', 2)
+        Logger.log("Find patterns:", 2)
         for pattern in self.find:
             Logger.log(f"\t- {pattern.pattern}", 2)
         if self.replace:
