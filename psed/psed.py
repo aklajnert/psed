@@ -100,7 +100,7 @@ class Psed:
                 return glob_input
             sys.exit(f"The input path doesn't exist: '{self.input}'")
         elif os.path.isfile(self.input):
-            Logger.log(f"Found the input file: {self.input}")
+            Logger.log(f"Found the input file: {self.input}", 1)
             return [self.input]
         else:
             matches = []
@@ -109,7 +109,7 @@ class Psed:
                     matches.append(os.path.join(root, filename))
             if not matches:
                 sys.exit(f"Input directory: '{self.input}' contains no files.")
-            Logger.log(f"Found {len(matches)} files in '{self.input}' directory:")
+            Logger.log(f"Found {len(matches)} files in '{self.input}' directory:", 1)
             for item in matches:
                 Logger.log(f"\t- {item}", 1)
             return matches
