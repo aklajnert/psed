@@ -5,21 +5,37 @@ from click.testing import CliRunner
 
 from psed import __main__
 
-SAMPLE_FILE_1 = """
-[ERROR] Some error
-[INFO] Some info
-[WARNING] Some warning
-[ERROR] Other error
-[ERROR] There's a lot of errors
-[DEBUG] And one debug
-"""
+SAMPLE_FILE_1 = (
+    "[ERROR] Some error\n"
+    "[INFO] Some info\n"
+    "[WARNING] Some warning\n"
+    "[ERROR] Other error\n"
+    "[ERROR] There's a lot of errors\n"
+    "[DEBUG] And one debug\n"
+)
 
-SAMPLE_FILE_2 = """
-[ERROR] First error
-[ERROR] Second error
-[INFO] Info message
-[WARNING] There were 2 errors
-"""
+SAMPLE_FILE_1_REPLACED = (
+    f"{{ERROR}} Some error{os.linesep}"
+    f"{{INFO}} Some info{os.linesep}"
+    f"{{WARNING}} Some warning{os.linesep}"
+    f"{{ERROR}} Other error{os.linesep}"
+    f"{{ERROR}} There's a lot of errors{os.linesep}"
+    f"{{DEBUG}} And one debug{os.linesep}"
+)
+
+SAMPLE_FILE_2 = (
+    "[ERROR] First error\n"
+    "[ERROR] Second error\n"
+    "[INFO] Info message\n"
+    "[WARNING] There were 2 errors\n"
+)
+
+SAMPLE_FILE_2_REPLACED = (
+    f"{{ERROR}} First error{os.linesep}"
+    f"{{ERROR}} Second error{os.linesep}"
+    f"{{INFO}} Info message{os.linesep}"
+    f"{{WARNING}} There were 2 errors{os.linesep}"
+)
 
 
 def test_command_line_interface():
@@ -52,14 +68,14 @@ def test_find_full(fs):
         "	- first_file\n"
         "	- second_file\n"
         "first_file: 4 matches:\n"
-        "	(1, 8): [ERROR]\n"
-        "	(60, 67): [ERROR]\n"
-        "	(80, 87): [ERROR]\n"
-        "	(37, 46): [WARNING]\n"
+        "	(0, 7): [ERROR]\n"
+        "	(59, 66): [ERROR]\n"
+        "	(79, 86): [ERROR]\n"
+        "	(36, 45): [WARNING]\n"
         "second_file: 3 matches:\n"
-        "	(1, 8): [ERROR]\n"
-        "	(21, 28): [ERROR]\n"
-        "	(62, 71): [WARNING]\n"
+        "	(0, 7): [ERROR]\n"
+        "	(20, 27): [ERROR]\n"
+        "	(61, 70): [WARNING]\n"
     )
 
 
@@ -107,20 +123,5 @@ def test_find_replace(fs):
         "Saved file after changes: second_file_psed\n"
     )
 
-    assert first_replaced.contents == (
-        f"{os.linesep}"
-        f"{{ERROR}} Some error{os.linesep}"
-        f"{{INFO}} Some info{os.linesep}"
-        f"{{WARNING}} Some warning{os.linesep}"
-        f"{{ERROR}} Other error{os.linesep}"
-        f"{{ERROR}} There's a lot of errors{os.linesep}"
-        f"{{DEBUG}} And one debug{os.linesep}"
-    )
-
-    assert second_replaced.contents == (
-        f"{os.linesep}"
-        f"{{ERROR}} First error{os.linesep}"
-        f"{{ERROR}} Second error{os.linesep}"
-        f"{{INFO}} Info message{os.linesep}"
-        f"{{WARNING}} There were 2 errors{os.linesep}"
-    )
+    assert first_replaced.contents == SAMPLE_FILE_1_REPLACED
+    assert second_replaced.contents == SAMPLE_FILE_2_REPLACED
