@@ -1,3 +1,4 @@
+import os
 import re
 
 from click.testing import CliRunner
@@ -107,19 +108,19 @@ def test_find_replace(fs):
     )
 
     assert first_replaced.contents == (
-        "\r\n"
-        "{ERROR} Some error\r\n"
-        "{INFO} Some info\r\n"
-        "{WARNING} Some warning\r\n"
-        "{ERROR} Other error\r\n"
-        "{ERROR} There's a lot of errors\r\n"
-        "{DEBUG} And one debug\r\n"
+        f"{os.linesep}"
+        f"{{ERROR}} Some error{os.linesep}"
+        f"{{INFO}} Some info{os.linesep}"
+        f"{{WARNING}} Some warning{os.linesep}"
+        f"{{ERROR}} Other error{os.linesep}"
+        f"{{ERROR}} There's a lot of errors{os.linesep}"
+        f"{{DEBUG}} And one debug{os.linesep}"
     )
 
     assert second_replaced.contents == (
-        "\r\n"
-        "{ERROR} First error\r\n"
-        "{ERROR} Second error\r\n"
-        "{INFO} Info message\r\n"
-        "{WARNING} There were 2 errors\r\n"
+        f"{os.linesep}"
+        f"{{ERROR}} First error{os.linesep}"
+        f"{{ERROR}} Second error{os.linesep}"
+        f"{{INFO}} Info message{os.linesep}"
+        f"{{WARNING}} There were 2 errors{os.linesep}"
     )
