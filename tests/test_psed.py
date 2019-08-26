@@ -61,14 +61,14 @@ def test_find_full(fs):
         "	(62, 71): [WARNING]\n"
     )
 
+
 def test_find_full_no_results(fs):
     fs.create_file("first_file", contents=SAMPLE_FILE_1)
     fs.create_file("second_file", contents=SAMPLE_FILE_2)
 
     runner = CliRunner()
     result = runner.invoke(
-        __main__.main,
-        ["--input", "*_file", "--find", r"\[CRITICAL\]", "-vv"],
+        __main__.main, ["--input", "*_file", "--find", r"\[CRITICAL\]", "-vv"]
     )
 
     assert result.exit_code == 0
@@ -79,4 +79,47 @@ def test_find_full_no_results(fs):
         "	- first_file\n"
         "	- second_file\n"
         "No matches.\n"
+    )
+
+
+def test_find_replace(fs):
+    fs.create_file("first_file", contents=SAMPLE_FILE_1)
+    first_replaced = fs.create_file("first_file_psed")
+    fs.create_file("second_file", contents=SAMPLE_FILE_2)
+    second_replaced = fs.create_file("second_file_psed")
+
+    runner = CliRunner()
+    result = runner.invoke(
+        __main__.main,
+        ["--input", "*_file", "--find", r"\[(\w+)\]", "--replace", r"{\1}", "-vv"],
+    )
+
+    assert result.exit_code == 0
+    assert result.output == (
+        "Find patterns:\n"
+        "	- \\[(\\w+)\\]\n"
+        "Replace pattern: {\\1}\n"
+        "Glob has matched following files:\n"
+        "	- first_file\n"
+        "	- second_file\n"
+        "Saved file after changes: first_file_psed\n"
+        "Saved file after changes: second_file_psed\n"
+    )
+
+    assert first_replaced.contents == (
+        "\r\n"
+        "{ERROR} Some error\r\n"
+        "{INFO} Some info\r\n"
+        "{WARNING} Some warning\r\n"
+        "{ERROR} Other error\r\n"
+        "{ERROR} There's a lot of errors\r\n"
+        "{DEBUG} And one debug\r\n"
+    )
+
+    assert second_replaced.contents == (
+        "\r\n"
+        "{ERROR} First error\r\n"
+        "{ERROR} Second error\r\n"
+        "{INFO} Info message\r\n"
+        "{WARNING} There were 2 errors\r\n"
     )
