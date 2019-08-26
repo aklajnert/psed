@@ -56,7 +56,7 @@ Input file:
 
 Run psed:
 
-.. code-block:: bash:
+.. code-block::
 
     psed --input ./sample \
          --find '\[(ERROR)\]' \
