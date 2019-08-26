@@ -26,8 +26,8 @@ class Psed:
     def run(self):
         input_list = self._get_input()
 
-        match = any(bool(self.process_file(item)) for item in input_list)
-        if not match:
+        match = [bool(self.process_file(item)) for item in input_list]
+        if not any(match):
             Logger.log("No matches.")
 
     def process_file(self, path: str):
