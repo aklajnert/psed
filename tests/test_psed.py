@@ -125,3 +125,38 @@ def test_find_replace(fs):
 
     assert first_replaced.contents == SAMPLE_FILE_1_REPLACED
     assert second_replaced.contents == SAMPLE_FILE_2_REPLACED
+
+
+def test_find_replace_inplace(fs):
+    first_file = fs.create_file("first_file", contents=SAMPLE_FILE_1)
+    second_file = fs.create_file("second_file", contents=SAMPLE_FILE_2)
+
+    runner = CliRunner()
+    result = runner.invoke(
+        __main__.main,
+        [
+            "--input",
+            "*_file",
+            "--find",
+            r"\[(\w+)\]",
+            "--replace",
+            r"{\1}",
+            "--inplace",
+            "-vv",
+        ],
+    )
+
+    assert result.exit_code == 0
+    assert result.output == (
+        "Find patterns:\n"
+        "	- \\[(\\w+)\\]\n"
+        "Replace pattern: {\\1}\n"
+        "Glob has matched following files:\n"
+        "	- first_file\n"
+        "	- second_file\n"
+        "Modified file: first_file\n"
+        "Modified file: second_file\n"
+    )
+
+    assert first_file.contents == SAMPLE_FILE_1_REPLACED
+    assert second_file.contents == SAMPLE_FILE_2_REPLACED
