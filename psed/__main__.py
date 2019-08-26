@@ -1,4 +1,4 @@
-"""Console script for psed."""
+"""CLI utility for text search / replace."""
 import sys
 
 import click
